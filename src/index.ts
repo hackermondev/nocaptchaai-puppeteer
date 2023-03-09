@@ -23,7 +23,7 @@ export const solveCaptcha = async (
 ): Promise<void> => {
   const outer = await page.waitForSelector('iframe[data-hcaptcha-response]');
   const outerFrame = await outer?.contentFrame();
-  const inner = await page.waitForSelector('iframe:not([data-hcaptcha-response])');
+  const inner = await page.waitForSelector('iframe:not([data-hcaptcha-response])[scrolling=no]');
   const innerFrame = await inner?.contentFrame();
   if (!outerFrame) throw new Error('solveCaptcha: captcha outer frame not found');
   if (!innerFrame) throw new Error('solveCaptcha: captcha inner frame not found');
@@ -36,7 +36,8 @@ export const solveCaptcha = async (
 
   try {
     // const language = await page.evaluate(() => document.documentElement.lang); // doesn't work
-    const language = await innerFrame.evaluate(() => document.documentElement.lang);
+//     const language = await innerFrame.evaluate(() => document.documentElement.lang);
+    const language = 'en';
 
     if (debug) console.log('🌍 Language found = ', language);
 
